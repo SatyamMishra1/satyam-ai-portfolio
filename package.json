@@ -14,9 +14,12 @@
     "@mistralai/mistralai": "^1.13.0",
     "@mui/material": "^7.3.7",
     "antd": "^6.2.1",
+    "exceljs": "^4.4.0",
+    "file-saver": "^2.0.5",
     "lottie-react": "^2.4.1",
     "marked": "^17.0.1",
-    "next": "16.1.4",
+    "next": "^16.1.6",
+    "nodemailer": "^7.0.13",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "sass": "^1.97.3"

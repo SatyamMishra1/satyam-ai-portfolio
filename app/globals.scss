@@ -5,8 +5,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #ffffff;
+    --foreground: #171717;
   }
 }
 
@@ -45,9 +45,47 @@ a {
     text-align: center;
     margin-bottom: 4rem;
     h1 { font-size: 3rem; margin-bottom: 0.5rem; }
-    .subtitle { font-size: 1.2rem; color: #666; }
+    .subtitle { font-size: 1.2rem; color: #666; margin:20px auto; }
   }
+.tagsWrapper{
 
+  @media screen and (max-width: 600px) {
+    overflow-x: auto;
+    width: 100%;
+    scrollbar-width: none;
+    display: flex;
+      gap: 16px;
+      animation: marquee 20s linear infinite;
+      width: max-content;
+      mask-image: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 1) 10%,
+        rgba(0, 0, 0, 1) 90%,
+        rgba(0, 0, 0, 0) 100%
+      );
+      -webkit-mask-image: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 1) 10%,
+        rgba(0, 0, 0, 1) 90%,
+        rgba(0, 0, 0, 0) 100%
+      );
+  }
+}
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%); // Move halfway through the duplicated content
+  }
+}
+
+// Optional: Pause on touch/hover
+.tagsWrapper:active {
+  animation-play-state: paused;
+}
   .chat-card {
     background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(10px);
@@ -84,6 +122,25 @@ a {
       z-index: 2;
       align-items: flex-start;
       &.user { flex-direction: row-reverse; .message-content { background: #1677ff; color: white; } }
+      a {
+        color: #1677ff; // Ant Design's primary blue
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        border-bottom: 1px solid transparent; // Clean way to prep for underline
+    
+        &:hover {
+          color: #4096ff; // Lighter blue on hover
+          text-decoration: underline;
+          text-underline-offset: 4px; // Gives the underline some "breathing room"
+        }
+      }
+    
+      // Ensure lists inside the chat are styled properly too
+      ul, ol {
+        padding-left: 20px;
+        margin: 10px 0;
+      }
     }
 
     .message-content {
@@ -94,6 +151,10 @@ a {
       
       p { margin: 0; }
       pre { background: #2d2d2d; color: #fff; padding: 0.5rem; border-radius: 5px; overflow-x: auto; }
+      strong, b {
+        color: #1d1d1f;
+        font-weight: 700;
+      }
     }
   }
 
