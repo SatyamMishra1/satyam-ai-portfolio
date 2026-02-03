@@ -29,6 +29,7 @@ export async function POST(req) {
     - LinkedIn: [https://www.linkedin.com/in/satyam2/](https://www.linkedin.com/in/satyam2/)
     
     Work Experience (Descending Order):
+    1. Satyam has more than 4 years of work experience.
     1. Quara Holding (August 2023 – Present): Leading complex integrations and full-stack development. [Website: https://www.quaraholding.com/]
     2. Accolite Digital / Bounteous (May 2021 – July 2023): Focused on high-scale digital solutions. [Website: https://www.bounteous.com/]
 

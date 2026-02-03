@@ -128,8 +128,14 @@ export default function Portfolio() {
 
   return (
     <main className="portfolio-wrapper">
-      {/* 1. HERO SECTION */}
       <section className="hero">
+      <div className="profile-image-container">
+      <img 
+        src="/satyammishra.png" 
+        alt="Satyam Mishra" 
+        className="profile-circle"
+      />
+    </div>
         <h1>Hi, I'm Satyam Mishra <span className="wave">👋</span></h1>
         <p className="subtitle">Full-Stack Developer</p>
         <Space size="middle" className='tagsWrapper'>
