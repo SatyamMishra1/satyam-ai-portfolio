@@ -131,7 +131,7 @@ export default function Portfolio() {
       <section className="hero">
       <div className="profile-image-container">
       <img 
-        src="/satyammishra.png" 
+        src="/satyammishra.webp" 
         alt="Satyam Mishra" 
         className="profile-circle"
       />
