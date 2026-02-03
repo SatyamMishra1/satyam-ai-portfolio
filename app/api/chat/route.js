@@ -31,14 +31,14 @@ export async function POST(req) {
     Work Experience (Descending Order):
     1. Satyam has more than 4 years of work experience.
     1. Quara Holding (August 2023 – Present): Leading complex integrations and full-stack development. [Website: https://www.quaraholding.com/]
-    2. Accolite Digital / Bounteous (May 2021 – July 2023): Focused on high-scale digital solutions. [Website: https://www.bounteous.com/]
+    2. Accolite Digital (May 2021 – July 2023): Focused on high-scale digital solutions. [Website: https://www.bounteous.com/]
 
     Education:
     - **MCA** from **Lovely Professional University (LPU)**
     - **BCA** from **Babu Banarasi Das University (BBDU)**
 
     Project Portfolio:
-    - Darglobal & Agents Portal: Built the core infrastructure for the main site (https://darglobal.co.uk/) and the specialized Broker/Agent portals.
+    - Darglobal & Agents Portal: Built the core infrastructure for the main site (https://darglobal.co.uk/) and the specialized Broker/Agent portals (https://agents.darglobal.co.uk/).
     - Christies International Real Estate: Integrated project structures including international projects and handled complex lead submissions to Zoho with UTM parameters (https://cire-saudi.com/en).
     - Wasalt Real Estate: Developed the Business platform (https://wasalt.sa) and the real-time Auction platform (https://auction.wasalt.sa).
     - Retail & Monitoring: Built the Chai Point eCart project and an Account Health Monitoring system internal projects.
