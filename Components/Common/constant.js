@@ -9,3 +9,9 @@ export const tags = [
   { name: "Zoho", color: "green" },
   { name: "Strapi", color: "purple" },
 ];
+
+export const suggestions = [
+  { label: "🚀 About Satyam", value: "Tell me about Satyam's professional background." },
+  { label: "📧 Contact Info", value: "How can I contact Satyam or schedule a meeting?" },
+  { label: "💼 Work Experience", value: "What are Satyam's major projects and work experience?" }
+];

@@ -5,7 +5,7 @@ import { Button, Input, Card, Tag, Space, Tooltip } from 'antd';
 import { SendOutlined, RobotOutlined, UserOutlined, FileExcelOutlined } from '@ant-design/icons';
 import Lottie from "lottie-react";
 import robotAnimation from '../public/animations/webdesign.json';
-import { tags } from '@/Components/Common/constant';
+import { suggestions, tags } from '@/Components/Common/constant';
 import ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 
@@ -17,16 +17,24 @@ export default function Portfolio() {
   const [isTyping, setIsTyping] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const chatEndRef = useRef(null);
+  const [messageFromPill, setMessageFromPill] = useState('');
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chat]);
+
+  useEffect(() => {
+    if (messageFromPill && input) {
+      askAI();
+    }
+  }, [messageFromPill, input])
 
   const askAI = async () => {
     if (!input.trim() || isDisabled) return;
     setIsDisabled(true);
     const userMsg = { role: 'user', content: input };
     setInput('');
+    setMessageFromPill('');
     setIsTyping(true);
     const updatedHistory = [...chat, userMsg];
     setChat(updatedHistory);
@@ -38,11 +46,13 @@ export default function Portfolio() {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: input, 
-          history: updatedHistory }),
+        body: JSON.stringify({
+          message: input,
+          history: updatedHistory
+        }),
       });
 
-      
+
       const data = await res.json();
       const aiResponse = data?.text;
       const emailRegex = /\[TRIGGER_EMAIL:\s*(.*?)\s*\|\s*(.*?)\s*\|\s*(.*?)\]/i;
@@ -57,13 +67,13 @@ export default function Portfolio() {
         fetch('/api/send-email', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            name: name.trim(), 
-            email: email.trim(), 
-            comment: comment.trim() 
+          body: JSON.stringify({
+            name: name.trim(),
+            email: email.trim(),
+            comment: comment.trim()
           }),
         }).then(response => {
-          if(response.ok) console.log("Email sent successfully!");
+          if (response.ok) console.log("Email sent successfully!");
           else console.error("Email API failed");
         }).catch(err => console.error("Network error on email call:", err));
       }
@@ -82,7 +92,7 @@ export default function Portfolio() {
     renderer.link = ({ href, title, text }) => {
       return `<a href="${href}" title="${title || ''}" target="_blank" rel="noopener noreferrer">${text}</a>`;
     };
-  
+
     return marked.parse(content, { renderer });
   };
 
@@ -104,7 +114,7 @@ export default function Portfolio() {
       { header: 'Message', key: 'message', width: 50 },
       { header: 'Timestamp', key: 'time', width: 25 },
     ];
-  
+
     chat.forEach((msg, index) => {
       worksheet.addRow({
         id: index + 1,
@@ -113,61 +123,72 @@ export default function Portfolio() {
         time: new Date().toLocaleString(),
       });
     });
-  
+
     worksheet.getRow(1).font = { bold: true };
     worksheet.getRow(1).fill = {
       type: 'pattern',
       pattern: 'solid',
       fgColor: { argb: 'FFDBEAFE' },
     };
-  
+
     const buffer = await workbook.xlsx.writeBuffer();
     const data = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     saveAs(data, `Satyam_Chat_Export_${new Date().getTime()}.xlsx`);
   };
 
+  const handlePillClick = (messageValue) => {
+    if (isDisabled) return;
+    sendMessage(messageValue);
+  };
+  const sendMessage = async (text) => {
+    const messageToSend = text || input;
+    if (!messageToSend.trim()) return;
+    setMessageFromPill(messageToSend)
+    setInput(messageToSend);
+  };
+
   return (
     <main className="portfolio-wrapper">
       <section className="hero">
-      <div className="profile-image-container">
-      <img 
-        src="/satyammishra.webp" 
-        alt="Satyam Mishra" 
-        className="profile-circle"
-      />
-    </div>
+        <div className="profile-image-container">
+          <img
+            src="/satyammishra.webp"
+            alt="Satyam Mishra"
+            className="profile-circle"
+          />
+        </div>
         <h1>Hi, I'm Satyam Mishra <span className="wave">👋</span></h1>
         <p className="subtitle">Full-Stack Developer</p>
         <Space size="middle" className='tagsWrapper'>
-        {tags?.map((tag, index) => (
-      <Tag key={index} color={tag.color} style={{ flexShrink: 0 }}>
-        {tag.name}
-      </Tag>
-    ))}
+          {tags?.map((tag, index) => (
+            <Tag key={index} color={tag.color} style={{ flexShrink: 0 }}>
+              {tag.name}
+            </Tag>
+          ))}
         </Space>
       </section>
 
       <section className="ai-chat-section">
         <Card title={<span><RobotOutlined /> Ask My AI</span>} className="chat-card"
-        extra={chat?.length > 2 && (
-          <Tooltip title="Export chat to Excel">
-            <Button 
-              type="text" 
-              icon={<FileExcelOutlined style={{ color: '#1d6f42', fontSize: '18px' }} />} 
-              onClick={exportChatToExcel}
-            >
-              Export
-            </Button>
-          </Tooltip>
-        )}
+          extra={chat?.length > 2 && (
+            <Tooltip title="Export chat to Excel">
+              <Button
+                type="text"
+                icon={<FileExcelOutlined style={{ color: '#1d6f42', fontSize: '18px' }} />}
+                onClick={exportChatToExcel}
+              >
+                Export
+              </Button>
+            </Tooltip>
+          )}
         >
           <div className="chat-window">
             {chat?.length === 1 && robotAnimation && (
               <div className="lottie-container">
-                <Lottie 
-                  animationData={robotAnimation} 
-                  loop={true} 
-                  style={{ height: 100, width: 150 }} 
+                <Lottie
+                  animationData={robotAnimation}
+                  loop={true}
+                  style={{ height: 100, width: 150 }}
                 />
               </div>
             )}
@@ -176,24 +197,37 @@ export default function Portfolio() {
                 <div className="avatar">
                   {msg?.role === 'ai' ? <RobotOutlined /> : <UserOutlined />}
                 </div>
-                <div 
+                <div
                   className="message-content"
-                  dangerouslySetInnerHTML={{ __html: msg.content }} 
+                  dangerouslySetInnerHTML={{ __html: msg.content }}
                 />
               </div>
             ))}
             {isTyping && <div className="typing">AI is thinking...</div>}
             <div ref={chatEndRef} />
           </div>
-          
-          <div className="input-area">
-            <Input 
-              value={input} 
-              onChange={(e) => setInput(e.target.value)}
-              onPressEnter={askAI}
-              placeholder={"Ask anything about me"}
-              suffix={<Button type="primary" icon={<SendOutlined />} disabled={isDisabled} onClick={askAI} />}
-            />
+          <div className="suggestion-pills">
+            <Space size={[5]}>
+              {suggestions?.map((pill, index) => (
+                <Tag
+                  key={index}
+                  className="pill-item"
+                  onClick={() => handlePillClick(pill.value)}
+                >
+                  {pill.label}
+                </Tag>
+              ))}
+            </Space>
+
+            <div className="input-area">
+              <Input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onPressEnter={askAI}
+                placeholder={"Ask anything about me"}
+                suffix={<Button type="primary" icon={<SendOutlined />} disabled={isDisabled} onClick={askAI} />}
+              />
+            </div>
           </div>
         </Card>
       </section>
